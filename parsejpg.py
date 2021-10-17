@@ -6,7 +6,6 @@ import json
 
 
 def pars_img(path):
-    print(path)
     img = cv2.imread(path)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     #  немножко приблюрим
@@ -40,47 +39,19 @@ def pars_img(path):
     for j, i in enumerate(range(0, len(spis), 2)):
         try:
             if j == 5:
-                print(spis[i])
+                pass
             d[spis[i]] = spis[i+1]
         except IndexError:
             d[spis[i]] = ''
 
-    print(d)
-
-
-
-    print(spis)
-
-
-
-    # n = len(dic['text'])
-    # out = dict()
-    # k = ''
-    # text = ''
-    # for i in range(n):
-    #     #print(list(map(sum, dic['text'][4:7])))
-    #     if 4 <= i <= 6:
-    #         k += dic['text'][i]+' '
-    #
-    #     if 1 <= dic['line_num'][i] < 3:
-    #         text += dic['text'][i]+' '
-    #
-    #         out[k] = text
-    #
-    #     #print(out)
-    #
-    #     print(i,'->', dic['line_num'][i],'->', dic['par_num'][i], dic['text'][i], end='')
-    #     print()
-    # print(text)
-
-
-    # data = pytesseract.image_to_data(img, config=config, lang='rus')
-    # for i, el in enumerate(data.splitlines()):
-    #     print(i, el)
+    #  пишем в файлики jsonki
+    path_out = os.path.basename(path).split('.')[0]  # берем название файла jpg
+    with open(f'data{path_out}.txt', 'w') as out_file:
+        json.dump(d, out_file, sort_keys=True, indent=4,
+                  ensure_ascii=False)
 
 
 if __name__ == '__main__':
 
     for path in glob(os.getcwd()+'/cv/'+'/*.jpg', recursive=True):
-
         pars_img(path)
